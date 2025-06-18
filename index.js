@@ -1,5 +1,4 @@
 // index.js
-// where your node app starts
 
 require("dotenv").config();
 const express = require("express");
@@ -25,8 +24,11 @@ app.get("/api/hello", function (req, res) {
 
 // ✅ Required endpoint
 app.get("/api/whoami", function (req, res) {
+  const ip =
+    req.headers["x-forwarded-for"]?.split(",")[0] || req.socket.remoteAddress;
+
   res.json({
-    ipaddress: req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+    ipaddress: ip,
     language: req.headers["accept-language"],
     software: req.headers["user-agent"],
   });
